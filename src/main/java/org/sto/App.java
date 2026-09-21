@@ -1,9 +1,6 @@
 package org.sto;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
+import org.sto.model.Document;
 
 public class App {
     public static void main(String[] args) {
@@ -12,7 +9,7 @@ public class App {
         """
         #Header1
         Some text here.
-        #Header2
+        ##Header2
         More text here.
         ---
         @section("ВВЕДЕНИЕ")
@@ -22,15 +19,12 @@ public class App {
         Список источников
         """;
 
-        CharStream charStream = CharStreams.fromString(input);
-        StoMarkupLexer lexer = new StoMarkupLexer(charStream);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        StoMarkupParser parser = new StoMarkupParser(tokens);
-        ParseTree tree = parser.document();
-
-        DocumentVisitor visitor = new DocumentVisitor();
-        visitor.visit(tree);
+        StoDocumentParser parser = new StoDocumentParser();
+        Document document = parser.parse(input);
         
+        for (var block : document.getBlocks()) {
+            System.out.println(block.toString());
+        }
 
     }
 }
