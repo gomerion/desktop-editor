@@ -1,3 +1,4 @@
 target/
 .antlr/
 .vscode/
+*.pdf
